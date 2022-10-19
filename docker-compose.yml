@@ -1,0 +1,36 @@
+version: "3.1"
+services:
+  db:
+    image: postgres:14.2
+    environment:
+      - TZ=Asia/Jakarta
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - POSTGRES_DB=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+    volumes:
+      - ./database-data:/var/lib/postgresql/data/pgdata
+
+  odoo:
+    image: odoo:latest
+    depends_on:
+      - db
+    ports:
+      - "8001:8069/tcp"
+    volumes:
+      # - "/etc/localtime:/etc/localtime:ro"
+      - ./odoo-data:/var/lib/odoo
+      - ./addons:/mnt/extra-addons
+      - ./etc_odoo:/etc/odoo
+    environment:
+      - TZ=Asia/Jakarta
+
+    command: --dev=all --limit-time-real=1000000
+
+  adminer:
+    environment:
+      - TZ=Asia/Jakarta
+    image: adminer:latest
+    ports:
+      - "8181:8080"
