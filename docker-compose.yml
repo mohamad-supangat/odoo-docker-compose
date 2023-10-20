@@ -8,12 +8,13 @@ services:
       - POSTGRES_USER=odoo
       - POSTGRES_DB=postgres
       - PGDATA=/var/lib/postgresql/data/pgdata
-
+    ports:
+      - "5432:5432/tcp"
     volumes:
       - ./database-data:/var/lib/postgresql/data/pgdata
 
   odoo:
-    image: odoo:latest
+    image: odoo:15
     depends_on:
       - db
     ports:
