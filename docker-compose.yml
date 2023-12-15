@@ -30,8 +30,16 @@ services:
     command: --dev=all --limit-time-real=1000000
 
   adminer:
+    depends_on:
+      - db
     environment:
       - TZ=Asia/Jakarta
     image: adminer:latest
     ports:
       - "8181:8080"
+  pgadmin:
+    depends_on:
+      - db
+    image: dpage/pgadmin4
+    ports:
+      - "8282:8080"
